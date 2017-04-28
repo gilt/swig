@@ -56,16 +56,24 @@ module.exports = function lintersSetup(gulp, swig) {
   gulp.task('lint-setup', (done) => {
     let baseName;
     let baseSource;
+    let publicPath;
 
     function source(type, extension) {
       return baseSource
-              .replace(/\{type\}/g, type)
-              .replace(/\{extension\}/g, extension);
+        .replace(/\{type\}/g, type)
+        .replace(/\{extension\}/g, extension);
     }
 
     if (swig.project.type === 'webapp') {
       baseName = path.basename(swig.target.path);
-      baseSource = path.join(swig.target.path, 'public/{type}/', baseName, '/src/**/*.{extension}');
+      if (swig.argv.public) {
+        publicPath = swig.argv.public;
+      } else if (swig.pkg.gilt && swig.pkg.gilt.publicPath) {
+        publicPath = swig.pkg.gilt.publicPath;
+      } else {
+        publicPath = swig.target.path + '/public';
+      }
+      baseSource = path.join(publicPath, '/{type}/', baseName, '/src/**/*.{extension}');
     } else {
       baseSource = path.join(swig.target.path, '/**/*.{extension}');
     }
@@ -80,8 +88,8 @@ module.exports = function lintersSetup(gulp, swig) {
     if (swig.project.type === 'webapp') {
       paths.css = [
         paths.css,
-        `!${path.join(swig.target.path,
-          'public/css/',
+        `!${path.join(publicPath,
+          'css/',
           baseName,
           '/src/**/reset.{css,less}'
         )}`
