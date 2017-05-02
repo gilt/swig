@@ -15,6 +15,12 @@ of [Lesshint][2]), namely [Stylelint][3], like so:
 swig lint --use-stylelint
 ```
 
+You can also instruct the linter to look at a specific source folder
+
+```
+swig lint --src /web/web-blah/target
+```
+
 In this case you shall provide the linter a `.stylelintrc.yml` file with the necessary Stylelint
 configuration.
 

@@ -66,8 +66,8 @@ module.exports = function lintersSetup(gulp, swig) {
 
     if (swig.project.type === 'webapp') {
       baseName = path.basename(swig.target.path);
-      if (swig.argv.public) {
-        publicPath = swig.argv.public;
+      if (swig.argv.src) {
+        publicPath = swig.argv.src;
       } else if (swig.pkg.gilt && swig.pkg.gilt.publicPath) {
         publicPath = swig.pkg.gilt.publicPath;
       } else {
