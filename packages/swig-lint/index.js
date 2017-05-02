@@ -71,7 +71,7 @@ module.exports = function lintersSetup(gulp, swig) {
       } else if (swig.pkg.gilt && swig.pkg.gilt.publicPath) {
         publicPath = swig.pkg.gilt.publicPath;
       } else {
-        publicPath = swig.target.path + '/public';
+        publicPath = `${swig.target.path}/public`;
       }
       baseSource = path.join(publicPath, '/{type}/', baseName, '/src/**/*.{extension}');
     } else {
