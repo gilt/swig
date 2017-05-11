@@ -38,20 +38,27 @@ module.exports = function (gulp, swig) {
       '--module, --m': 'Specifies the target module to run specs for, within the working directory.\nIf not specified, the task assumes the working directory is a web app.',
       '--targetExperience': 'Optional. The target experience to run specs for;\nfull, intermediate, or minimal',
       '--browser': 'Optional. Opens the specs in a browser window instead of running them in the console.',
-      '--verbose': 'Optional. Shows additional infomration on the process, including console output from PhantomJS.'
+      '--verbose': 'Optional. Shows additional infomration on the process, including console output from PhantomJS.',
+      '--src': 'Specify the public folder'
     }
   });
+
+  function getSrcDirectory(){
+    return swig.argv.src || `${swig.target.path}/public`;
+  }
 
   // Loading swig dependencies
   swig.loadPlugins(require('./package.json').dependencies);
 
   gulp.task('spec-setup', (done) => {
+    const srcPath = getSrcDirectory();
+
     swig.log.task('Initializing Specs');
 
     swig.log.info('', 'Enumerating Dependencies...');
 
     // add main.js to the mix.
-    let mainJsPath = path.join(swig.target.path, 'public/js/', packageName, 'main.js');
+    let mainJsPath = path.join(srcPath, '/js/', packageName, 'main.js');
 
     // main.js is created in the system tempdir for modules.
     if (swig.project.type !== 'webapp') {
@@ -60,8 +67,8 @@ module.exports = function (gulp, swig) {
 
     scripts.push(mainJsPath);
 
-    specsPath = path.join(swig.target.path, 'public/spec/', packageName);
-    requireBasePath = path.join(swig.target.path, 'public/js/', packageName);
+    specsPath = path.join(srcPath, '/spec/', packageName);
+    requireBasePath = path.join(srcPath, '/js/', packageName);
 
     if (swig.project.type !== 'webapp') {
       // if we're in a ui-* modules repo
@@ -111,11 +118,13 @@ module.exports = function (gulp, swig) {
   });
 
   gulp.task('spec-templates', ['spec-mock-apidoc'], (done) => {
+    const srcPath = getSrcDirectory();
+
     swig.log.info('', 'Enumerating Templates...');
 
     const handlebars = require('handlebars');
-    let hbsPath = path.join(swig.target.path, 'public/templates/', packageName, 'src');
-    let destPath = path.join(swig.target.path, 'public/spec/', packageName, '/runner');
+    let hbsPath = path.join(srcPath, '/templates/', packageName, 'src');
+    let destPath = path.join(srcPath, '/spec/', packageName, '/runner');
     let tmp;
     let fileCount = 0;
     let hbsGlob = [];
@@ -266,7 +275,8 @@ module.exports = function (gulp, swig) {
   });
 
   gulp.task('spec', function (done) {
-    let _specsPath = path.join(swig.target.path, 'public/spec/', packageName);
+    const srcPath = getSrcDirectory();
+    let _specsPath = path.join(swig.target.path, srcPath, '/spec/', packageName);
     let installTask = 'install-noop';
 
     if (swig.project.type !== 'webapp') {
