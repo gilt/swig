@@ -44,7 +44,17 @@ module.exports = function (gulp, swig) {
   });
 
   function getSrcDirectory(){
-    return swig.argv.src || `${swig.target.path}/public`;
+    let srcPath;
+
+    if (swig.argv.src) {
+      srcPath = swig.argv.src;
+    } else if (swig.pkg.gilt && (swig.pkg.gilt.srcPath || swig.pkg.gilt.publicPath)) {
+      srcPath = swig.pkg.gilt.srcPath || swig.pkg.gilt.publicPath;
+    } else {
+      srcPath = `${swig.target.path}/public`;
+    }
+
+    return srcPath;
   }
 
   // Loading swig dependencies
@@ -276,12 +286,12 @@ module.exports = function (gulp, swig) {
 
   gulp.task('spec', function (done) {
     const srcPath = getSrcDirectory();
-    let _specsPath = path.join(swig.target.path, srcPath, '/spec/', packageName);
+    let _specsPath = path.join(srcPath, '/spec/', packageName);
     let installTask = 'install-noop';
 
     if (swig.project.type !== 'webapp') {
       // if we're in a ui-* modules repo
-      _specsPath = path.join(swig.target.path, 'spec/');
+      _specsPath = path.join(srcPath, 'spec/');
     }
 
     if (swig.argv.module || swig.argv.m) {
