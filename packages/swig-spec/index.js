@@ -43,7 +43,7 @@ module.exports = function (gulp, swig) {
     }
   });
 
-  function getSrcDirectory () {
+  function getSrcDirectory() {
     let srcPath;
 
     if (swig.argv.src) {
