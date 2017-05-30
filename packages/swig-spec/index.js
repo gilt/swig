@@ -57,11 +57,28 @@ module.exports = function (gulp, swig) {
     return srcPath;
   }
 
+  function getSpecDirectory() {
+    let specPath;
+
+    if (swig.argv.spec) {
+      specPath = swig.argv.spec;
+    } else if (swig.pkg.gilt && (swig.pkg.gilt.specPath || swig.pkg.gilt.publicPath)) {
+      specPath = swig.pkg.gilt.specPath || swig.pkg.gilt.publicPath;
+    } else if(swig.argv.src) {
+      specPath = `${swig.argv.src}/spec`
+    } else {
+      specPath = `${swig.target.path}/public/spec`;
+    }
+
+    return specPath;
+  }
+
   // Loading swig dependencies
   swig.loadPlugins(require('./package.json').dependencies);
 
   gulp.task('spec-setup', (done) => {
     const srcPath = getSrcDirectory();
+    let specsPath = getSpecDirectory();
 
     swig.log.task('Initializing Specs');
 
@@ -77,18 +94,18 @@ module.exports = function (gulp, swig) {
 
     scripts.push(mainJsPath);
 
-    specsPath = path.join(srcPath, '/spec/', packageName);
     requireBasePath = path.join(srcPath, '/js/', packageName);
 
     if (swig.project.type !== 'webapp') {
       // if we're in a ui-* modules repo
       tempPath = path.join(swig.temp, 'install', packageName);
-      specsPath = path.join(swig.target.path, 'spec/');
       requireBasePath = path.join(tempPath, 'public/js', packageName);
 
       // what we're doing here is telling require to use the files local to /js
       // for the module first, rather than what's in the temp ui-install dir.
       scripts = scripts.concat(glob.sync(path.join(swig.target.path, 'js/**/*.js')));
+    } else {
+      specsPath = path.join(specsPath, '/', packageName);
     }
 
     // load any fixtures in /specs/fixtures
@@ -129,23 +146,28 @@ module.exports = function (gulp, swig) {
 
   gulp.task('spec-templates', ['spec-mock-apidoc'], (done) => {
     const srcPath = getSrcDirectory();
+    let specsPath = getSpecDirectory();
+
+    console.log('specsPath:', specsPath);
 
     swig.log.info('', 'Enumerating Templates...');
 
     const handlebars = require('handlebars');
     let hbsPath = path.join(srcPath, '/templates/', packageName, 'src');
-    let destPath = path.join(srcPath, '/spec/', packageName, '/runner');
+    let destPath = path.join(specsPath, '/', packageName, '/runner');
     let tmp;
     let fileCount = 0;
     let hbsGlob = [];
 
     if (swig.project.type !== 'webapp') {
       hbsPath = path.join(swig.target.path, 'templates');
-      destPath = path.join(swig.target.path, 'spec/runner');
+      destPath = path.join(specsPath, '/runner');
 
       // it's a bit wonky for modules, but follows webapp structure
       tmp = path.join(swig.temp, 'install', swig.argv.module, 'public/templates/', swig.argv.module);
     }
+
+    console.log('destPath: ', destPath);
 
     hbsGlob = [
       path.join(hbsPath, '/**/*.handlebars'),
@@ -286,12 +308,13 @@ module.exports = function (gulp, swig) {
 
   gulp.task('spec', function (done) {
     const srcPath = getSrcDirectory();
-    let _specsPath = path.join(srcPath, '/spec/', packageName);
+    const specPath = getSpecDirectory();
+    let _specsPath = path.join(specPath, '/', packageName);
     let installTask = 'install-noop';
 
     if (swig.project.type !== 'webapp') {
       // if we're in a ui-* modules repo
-      _specsPath = path.join(srcPath, 'spec/');
+      _specsPath = path.join(specPath, '/');
     }
 
     if (swig.argv.module || swig.argv.m) {
