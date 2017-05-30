@@ -39,7 +39,8 @@ module.exports = function (gulp, swig) {
       '--targetExperience': 'Optional. The target experience to run specs for;\nfull, intermediate, or minimal',
       '--browser': 'Optional. Opens the specs in a browser window instead of running them in the console.',
       '--verbose': 'Optional. Shows additional infomration on the process, including console output from PhantomJS.',
-      '--src': 'Specify the public folder'
+      '--src': 'Specify the public folder',
+      '--spec': 'Specify the spec folder'
     }
   });
 
