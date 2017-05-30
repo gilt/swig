@@ -27,7 +27,6 @@ module.exports = function (gulp, swig) {
   let scripts = [];
   const fixtures = [];
   const packageName = _.isEmpty(swig.pkg) ? '' : swig.pkg.name.replace('@gilt-tech/', '');
-  let specsPath = '';
   let tempPath = '';
   let requireBasePath = '';
   let servers; // populated by mock-apidoc task
@@ -65,8 +64,8 @@ module.exports = function (gulp, swig) {
       specPath = swig.argv.spec;
     } else if (swig.pkg.gilt && (swig.pkg.gilt.specPath || swig.pkg.gilt.publicPath)) {
       specPath = swig.pkg.gilt.specPath || swig.pkg.gilt.publicPath;
-    } else if(swig.argv.src) {
-      specPath = `${swig.argv.src}/spec`
+    } else if (swig.argv.src) {
+      specPath = `${swig.argv.src}/spec`;
     } else {
       specPath = `${swig.target.path}/public/spec`;
     }
@@ -147,9 +146,7 @@ module.exports = function (gulp, swig) {
 
   gulp.task('spec-templates', ['spec-mock-apidoc'], (done) => {
     const srcPath = getSrcDirectory();
-    let specsPath = getSpecDirectory();
-
-    console.log('specsPath:', specsPath);
+    const specsPath = getSpecDirectory();
 
     swig.log.info('', 'Enumerating Templates...');
 
@@ -167,8 +164,6 @@ module.exports = function (gulp, swig) {
       // it's a bit wonky for modules, but follows webapp structure
       tmp = path.join(swig.temp, 'install', swig.argv.module, 'public/templates/', swig.argv.module);
     }
-
-    console.log('destPath: ', destPath);
 
     hbsGlob = [
       path.join(hbsPath, '/**/*.handlebars'),
@@ -232,6 +227,7 @@ module.exports = function (gulp, swig) {
   });
 
   gulp.task('spec-run', ['spec-templates'], () => {
+    const specsPath = getSpecDirectory();
     const defaultFramework = 'jasmine';
     const specs = [];
     const runnerPath = path.join(specsPath, '/runner');
@@ -308,7 +304,6 @@ module.exports = function (gulp, swig) {
   });
 
   gulp.task('spec', function (done) {
-    const srcPath = getSrcDirectory();
     const specPath = getSpecDirectory();
     let _specsPath = path.join(specPath, '/', packageName);
     let installTask = 'install-noop';
@@ -344,7 +339,6 @@ module.exports = function (gulp, swig) {
     }
     specTasks.push('spec-run');
     specTasks.push(done);
-
 
     swig.seq.apply(this, specTasks);
   });
