@@ -165,8 +165,9 @@ module.exports = function (gulp, swig) {
     }
   });
 
-  gulp.task('init', () => {
+  gulp.task('init', (cb) => {
     // Initialise scripts and stylesheets, setup watchers when done.
-    swig.seq(['init-scripts', 'init-styles'], 'watch');
+    // Once all tasks complete, callback - this is required to make swig.seq blocking
+    swig.seq(['init-scripts', 'init-styles'], 'watch', cb);
   });
 };
