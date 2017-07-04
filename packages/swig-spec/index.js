@@ -66,7 +66,7 @@ module.exports = function (gulp, swig) {
       specPath = swig.pkg.gilt.specPath || swig.pkg.gilt.publicPath;
     } else if (swig.argv.src) {
       specPath = `${swig.argv.src}/spec`;
-    } else if(swig.project.type !== 'webapp') {
+    } else if (swig.project.type !== 'webapp') {
       specPath = `${swig.target.path}/spec`;
     } else {
       specPath = `${swig.target.path}/public/spec`;
