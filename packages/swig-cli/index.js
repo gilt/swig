@@ -41,6 +41,7 @@ const swig = {
     enabled: (!!argv.watch || !!argv.watchScripts),
     watchers: []
   },
+  browserslist: thisPkg.browserslist
 };
 
 function load(moduleName) {

@@ -47,5 +47,10 @@
   },
   "bin": {
     "swig": "bin/swig"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "ie >= 11",
+    "iOS >= 8"
+  ]
 }

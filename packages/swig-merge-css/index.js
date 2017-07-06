@@ -21,22 +21,6 @@ const inlineImports = require('postcss-import');
 const autoprefixer = require('autoprefixer');
 const through2 = require('through2');
 
-const autoprefixerCfg = {
-  // https://github.com/postcss/autoprefixer#options
-  browsers: [
-    'last 2 versions',
-    'ie >= 11',
-    'iOS >= 8'
-  ],
-  // should Autoprefixer [remove outdated] prefixes. Default is true.
-  remove: true
-};
-const postcssPlugins = [
-  inlineImports,
-  autoprefixer(autoprefixerCfg),
-];
-
-
 module.exports = function (gulp, swig) {
   const basePath = path.join(swig.target.path, '/public/');
   const cssPath = path.join(basePath, '/css/', swig.target.name);
@@ -67,7 +51,10 @@ module.exports = function (gulp, swig) {
         paths: [cssPath],
         relativeUrls: false
       }))
-      .pipe(postcss(postcssPlugins))
+      .pipe(postcss(
+        inlineImports,
+        autoprefixer({ browsers: swig.browserslist }))
+      )
       .pipe(rename({ suffix: '.src' }))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(cssPath))
