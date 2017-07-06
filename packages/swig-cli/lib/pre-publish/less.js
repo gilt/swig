@@ -37,7 +37,7 @@ module.exports = function (log) {
   const autoprefixerConfig = {
     browsers: [
       'last 2 versions',
-      'ie >= 10',
+      'ie >= 11',
       'iOS >= 8'
     ]
   };
