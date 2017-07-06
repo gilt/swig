@@ -25,7 +25,7 @@ const autoprefixerCfg = {
   // https://github.com/postcss/autoprefixer#options
   browsers: [
     'last 2 versions',
-    'ie >= 10',
+    'ie >= 11',
     'iOS >= 8'
   ],
   // should Autoprefixer [remove outdated] prefixes. Default is true.
