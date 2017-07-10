@@ -100,7 +100,7 @@ module.exports = function (log) {
   log.info('Note', 'Each file is prepended with an @import of less.helpers.');
 
   const prefixer = postcss(autoprefixer({
-    browsers: swigCliPkg.browserslist
+    browsers: pkg.browserslist || swigCliPkg.browserslist
   }));
 
   lessFiles.forEach((filePath) => {
