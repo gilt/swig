@@ -141,7 +141,7 @@ module.exports = function (gulp, swig) {
         '@gilt-tech/internal.modernizr': '2.5.x',
         '@gilt-tech/internal.require': '2.1.x',
         '@gilt-tech/internal.gilt_require': '0.x.x',
-        '@gilt-tech/less.helpers': '0.3.x'
+        '@gilt-tech/less.helpers': '1.x.x'
       };
 
       if (fs.existsSync(packageTempPath)) {
