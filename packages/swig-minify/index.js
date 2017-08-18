@@ -14,7 +14,7 @@
    Brought to you by the fine folks at Gilt (http://github.com/gilt)
 */
 const path = require('path');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const rename = require('gulp-rename');
 const replace = require('./lib/gulp-replace-with-sourcemaps');
 const cleancss = require('gulp-clean-css');
