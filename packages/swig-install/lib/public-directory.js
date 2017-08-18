@@ -35,7 +35,8 @@ module.exports = function (gulp, swig) {
       '!./public/**/{target}/**/src',
       '!./public/**/{target}/**/src/**/*',
       '!./public/css/{target}/main.less',
-      '!./public/spec/{target}/**/*'
+      '!./public/spec/{target}/**/*',
+      '!./public/vue-assets/**/*'
     ];
 
     paths = _.map(paths, p => p.replace('{target}', swig.pkg.name));
@@ -154,10 +155,17 @@ module.exports = function (gulp, swig) {
     swig.log.info('', 'Writing manifest.json');
     swig.log.verbose(manifestPath.grey);
 
-    fs.writeFileSync(manifestPath, JSON.stringify({
-      generated: now,
-      dependencies: modules
-    }, null, 2));
+    fs.writeFileSync(
+      manifestPath,
+      JSON.stringify(
+        {
+          generated: now,
+          dependencies: modules
+        },
+        null,
+        2
+      )
+    );
   }
 
   function replace(paths) {
@@ -212,7 +220,7 @@ module.exports = function (gulp, swig) {
   }
 
   return function process() {
-    now = (new Date()).toString();
+    now = new Date().toString();
     const pkg = swig.pkg;
     const less = require('./less');
     const mainJs = require('./main-js');
@@ -220,7 +228,10 @@ module.exports = function (gulp, swig) {
     if (swig.argv.public) {
       if (!fs.existsSync(swig.argv.public)) {
         // Gonna error on a directory that does not exist
-        swig.log.error('install:public-directory', `Passed target folder ${swig.argv.public} does not exist.`);
+        swig.log.error(
+          'install:public-directory',
+          `Passed target folder ${swig.argv.public} does not exist.`
+        );
         return;
       }
       paths = { pub: swig.argv.public };

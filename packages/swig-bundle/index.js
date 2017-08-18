@@ -162,7 +162,9 @@ module.exports = function (gulp, swig) {
     const glob = [
       path.join(basePublicPath, '/js/**/*.js'),
 
-      // NOTE: exlcuding src/ as we want to fetch from the new app/ folder
+      // NOTE: For current node apps, `src/` folder contains untranspiled sources, which will be
+      // transpiled and put into `app/`. Therefore ignoring the `src/` altogether, as we don't want
+      // to send incompatible code to old browsers
       `!${path.join(basePublicPath, '/js/**/src/**/*.js')}`,
 
       `!${path.join(basePublicPath, '/js/**/internal/**/*.js')}`,

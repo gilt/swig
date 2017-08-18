@@ -43,8 +43,10 @@ const swig = {
   },
   get browserslist() {
     const appPkg = swig.pkg;
-    // A default list of browsers that should be supported in the front end app, based on https://github.com/ai/browserslist
-    // This can be overridden locally in the target App by adding a `"browserslist"` field in its own `package.json`
+    // A default list of browsers that should be supported in the front end app, based on
+    // https://github.com/ai/browserslist
+    // This can be overridden locally in the target App by adding a `"browserslist"` field in its
+    // own `package.json`
     const defaultBrowserslist = thisPkg.browserslist;
 
     return appPkg.browserslist || defaultBrowserslist;

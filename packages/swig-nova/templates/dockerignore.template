@@ -1,18 +1,49 @@
+# Node stuff
 node_modules
+
+# New relic stuff
 newrelic_agent.log
+
+# Common dotfiles
 .jshintrc
+.lesshintrc
+.stylelintrc
+.eslintrc
+.eslintrc.yml
+.eslignore
 .dockerignore
 .gitignore
-json/mock/*
-log/*
+.git
+.travis.yml
+.flowconfig
+
+# IDEs crap
+.idea
+.vscode
+
+# Coverage artifacts
+.nyc_output
+coverage
+
+# Node apps assets
+# Note: we want the public/templates directory in the docker image
 public/js
 public/css
 public/img
-# Note: we want the public/templates direcotry in the docker image
+
+# Tests stuff
+public/spec
+spec
+specs
 test
-.git
-.idea
+tests
+*.spec.js
+*.test.js
+
+# Other
 conf
 nova.yml
 *.md
 perf
+json/mock/*
+log/*

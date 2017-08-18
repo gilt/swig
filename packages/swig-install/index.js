@@ -104,7 +104,7 @@ module.exports = function (gulp, swig) {
   }
 
   function* local() {
-    if (swig.argv.module) {
+    if (swig.argv.module || swig.argv.skipNpmInstall) {
       swig.log.info('', 'Skipping Node Modules');
       return;
     }

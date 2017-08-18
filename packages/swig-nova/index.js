@@ -193,6 +193,12 @@ module.exports = function (gulp, swig) {
     const environments = novayml.environments.map(e => e.name);
     const v = getLatestVersionTag().replace('v', '').split('.').map(n => +n);
 
+    if (v.length < 3) {
+      v[0] = 0;
+      v[1] = 0;
+      v[2] = 0;
+    }
+
     let answer;
     let env;
 
@@ -450,12 +456,14 @@ module.exports = function (gulp, swig) {
 
         const latestVersion = getLatestVersionParsed();
 
-        if (semverDiff(latestVersion[1], versionMatch[1]) === null) {
+        if (latestVersion && semverDiff(latestVersion[1], versionMatch[1]) === null) {
           swig.log.error(`New version can not be less than latest existing version: ${latestVersion[1]}`);
           process.exit(1);
         } else {
           isNewBuild = true;
         }
+      } else {
+        isNewBuild = true;
       }
 
       if (isNewBuild) {
@@ -547,6 +555,16 @@ module.exports = function (gulp, swig) {
     execSync(`nova deploy ${argConfig.env} ${argConfig.stack} ${deployVersion}`, execSyncOpts.pipeOutput);
   });
 
+  gulp.task('npm-call-build-nova', () => {
+    if (swig.pkg.scripts && swig.pkg.scripts['build:nova']) {
+      swig.log.info('Found an npm "build:nova" script. Running it now.');
+      execSync('npm run build:nova', {
+        cwd: process.cwd(),
+        stdio: 'inherit'
+      });
+    }
+  });
+
   gulp.task('nova-deploy', (done) => {
     if (argv.h || argv.help) {    // --help
       outputHelp();
@@ -559,6 +577,7 @@ module.exports = function (gulp, swig) {
       'pull-latest-tags',
       'nova-new-version',
       'nova-specified-version',
+      'npm-call-build-nova',
       'assets-deploy',
       'nova-build-docker',
       'nova-version-cleanup',

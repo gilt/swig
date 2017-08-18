@@ -37,6 +37,9 @@ module.exports = function (gulp, swig) {
   const git = require('simple-git')(swig.target.path);
   git.exec = thunkify(git._run);
 
+  // Loading swig dependencies
+  swig.loadPlugins(require('./package.json').dependencies);
+
   let npmCommand;
   let tagName;
   let targetPath;

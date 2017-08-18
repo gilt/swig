@@ -52,7 +52,8 @@
   "scripts": {
     "fix": "eslint packages/ --format=codeframe --fix",
     "lint": "eslint packages/ --format=codeframe",
-    "bootstrap": "lerna bootstrap --npm-client=yarn",
-    "precommit": "npm run lint -- --cache --rule 'import/no-unresolved: 0'"
+    "bootstrap": "lerna bootstrap",
+    "precommit": "npm run lint -- --cache --rule 'import/no-unresolved: 0'",
+    "pub": "(npm run lint && lerna updated && lerna publish) || exit 0"
   }
 }
