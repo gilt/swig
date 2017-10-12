@@ -24,7 +24,6 @@
     "glob": "^7.1.1",
     "gulp-babel": "6.x.x",
     "gulp-cached": "^1.1.1",
-    "gulp-plumber": "^1.1.0",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^2.0.0",
     "gulp-tap": "^0.1.3",
