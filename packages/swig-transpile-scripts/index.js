@@ -16,7 +16,6 @@ module.exports = function (gulp, swig) {
   const babel = require('gulp-babel');
   const path = require('path');
   const tap = require('gulp-tap');
-  const plumber = require('gulp-plumber');
   const replace = require('gulp-replace');
   const map = require('gulp-sourcemaps');
   const transformModules = require('./lib/transform-es2015-modules-gilt');
@@ -70,11 +69,6 @@ module.exports = function (gulp, swig) {
 
     let stream = gulp.src(from)
       .pipe(cache('scripts'))
-      .pipe(plumber({
-        errorHandler: (e) => {
-          throw new Error(e);
-        }
-      }))
       .pipe(map.init({
         loadMaps: true
       }));
@@ -141,12 +135,7 @@ module.exports = function (gulp, swig) {
     swig.log.task('Transpiling server-side scripts');
 
     let stream = gulp.src(from)
-      .pipe(cache('scripts'))
-      .pipe(plumber({
-        errorHandler: (e) => {
-          throw new Error(e);
-        }
-      }));
+      .pipe(cache('scripts'));
 
     if (swig.argv.verbose) {
       stream = stream.pipe(tap((file) => {
