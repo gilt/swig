@@ -70,7 +70,11 @@ module.exports = function (gulp, swig) {
 
     let stream = gulp.src(from)
       .pipe(cache('scripts'))
-      .pipe(plumber())
+      .pipe(plumber({
+        errorHandler: (e) => {
+          throw new Error(e)
+        }
+      }))
       .pipe(map.init({
         loadMaps: true
       }));
@@ -138,7 +142,11 @@ module.exports = function (gulp, swig) {
 
     let stream = gulp.src(from)
       .pipe(cache('scripts'))
-      .pipe(plumber());
+      .pipe(plumber({
+        errorHandler: (e) => {
+          throw new Error(e)
+        }
+      }));
 
     if (swig.argv.verbose) {
       stream = stream.pipe(tap((file) => {
