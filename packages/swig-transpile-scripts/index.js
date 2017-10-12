@@ -72,7 +72,7 @@ module.exports = function (gulp, swig) {
       .pipe(cache('scripts'))
       .pipe(plumber({
         errorHandler: (e) => {
-          throw new Error(e)
+          throw new Error(e);
         }
       }))
       .pipe(map.init({
@@ -144,7 +144,7 @@ module.exports = function (gulp, swig) {
       .pipe(cache('scripts'))
       .pipe(plumber({
         errorHandler: (e) => {
-          throw new Error(e)
+          throw new Error(e);
         }
       }));
 
