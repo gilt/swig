@@ -36,7 +36,8 @@ module.exports = function (log) {
   const cssPath = path.join(publishPath, targetPath);
 
   // (tmpdir)/swig/publish/(module.name)/../../install/(module.name)
-  const installPath = path.join(os.tmpdir(), 'swig', '/install', packageName, '/public/css/', packageName);
+  // should be using swig-[project name]
+  const installPath = path.join(os.tmpdir(), `swig-${packageName}`, '/install', packageName, '/public/css/', packageName);
 
   const _lessPath = path.join(publishPath, '_less');
   const options = { paths: [installPath], relativeUrls: false };
